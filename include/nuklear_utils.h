@@ -212,10 +212,10 @@ static int setup_gui(struct nk_context **ctx, struct nk_glfw *glfw, GLFWwindow *
     int original = 16;
     int size = scale * original;
 
-    GLFWimage i;
-    i.width = size;
-    i.height = size;
-    i.pixels = calloc(sizeof(char), size*size*4);
+    GLFWimage img;
+    img.width = size;
+    img.height = size;
+    img.pixels = calloc(sizeof(char), size*size*4);
     char * pixels = calloc(sizeof(char), original*original*4);
     int i_len = original*original*4;
     from_base(hex_icon, original*original*8, pixels, &i_len, original, 0);
@@ -224,7 +224,7 @@ static int setup_gui(struct nk_context **ctx, struct nk_glfw *glfw, GLFWwindow *
     {
         for(int y = 0; y < original; y++)
         {
-            char * dest = i.pixels + (x*4*scale) + (y*4*scale*size);
+            char * dest = img.pixels + (x*4*scale) + (y*4*scale*size);
             char * src = pixels + x*4 + y*4*original;
             for(int i = 0; i < scale; i++)
             {
@@ -234,7 +234,7 @@ static int setup_gui(struct nk_context **ctx, struct nk_glfw *glfw, GLFWwindow *
         }
     }
      
-    glfwSetWindowIcon(*win, 1, &i);
+    glfwSetWindowIcon(*win, 1, &img);
 
     glfwGetWindowSize(*win, width, height);
     /* OpenGL */
