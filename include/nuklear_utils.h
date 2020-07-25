@@ -216,7 +216,7 @@ static int setup_gui(struct nk_context **ctx, struct nk_glfw *glfw, GLFWwindow *
     img.width = size;
     img.height = size;
     img.pixels = calloc(sizeof(char), size*size*4);
-    char * pixels = calloc(sizeof(char), original*original*4);
+    unsigned char * pixels = calloc(sizeof(char), original*original*4);
     int i_len = original*original*4;
     from_base(hex_icon, original*original*8, pixels, &i_len, original, 0);
 
@@ -224,8 +224,8 @@ static int setup_gui(struct nk_context **ctx, struct nk_glfw *glfw, GLFWwindow *
     {
         for(int y = 0; y < original; y++)
         {
-            char * dest = img.pixels + (x*4*scale) + (y*4*scale*size);
-            char * src = pixels + x*4 + y*4*original;
+            unsigned char * dest = img.pixels + (x*4*scale) + (y*4*scale*size);
+            unsigned char * src = pixels + x*4 + y*4*original;
             for(int i = 0; i < scale; i++)
             {
                 for(int j = 0; j < scale; j++)
@@ -254,7 +254,7 @@ static int setup_gui(struct nk_context **ctx, struct nk_glfw *glfw, GLFWwindow *
     
 
     int len = 62107;
-    char * font = malloc(len);
+    unsigned char * font = malloc(len);
     
     from_base(b64_font, 82808, font, &len, 64, 0);
     
