@@ -28,6 +28,8 @@
 #define MAX_VERTEX_BUFFER 512 * 1024
 #define MAX_ELEMENT_BUFFER 128 * 1024
 
+#include <util.h>
+
 
 struct nk_style_combo inactive_combo_style(struct nk_context *ctx)
 {
@@ -189,6 +191,8 @@ void character_callback(GLFWwindow* window, unsigned int codepoint)
 
 static int setup_gui(struct nk_context **ctx, struct nk_glfw *glfw, GLFWwindow **win, int *width, int *height)
 {
+    #include <font.h>
+    
     glfwSetErrorCallback(error_callback);
     if (!glfwInit()) {
         fprintf(stdout, "[GFLW] failed to init!\n");
@@ -200,8 +204,40 @@ static int setup_gui(struct nk_context **ctx, struct nk_glfw *glfw, GLFWwindow *
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     *win = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "GUICrypt", NULL, NULL);
     glfwMakeContextCurrent(*win);
+
+    int scale = 4;
+    int original = 16;
+    int size = scale * original;
+
+    GLFWimage i;
+    i.width = size;
+    i.height = size;
+    i.pixels = calloc(sizeof(char), size*size*4);
+    char * pixels = calloc(sizeof(char), original*original*4);
+    int i_len = original*original*4;
+    from_base(hex_icon, original*original*8, pixels, &i_len, original, 0);
+    
+    for(int x = 0; x < original; x++)
+    {
+        for(int y = 0; y < original; y++)
+        {
+            char * dest = i.pixels + (x*4*scale) + (y*4*scale*size);
+            char * src = pixels + x*4 + y*4*original;
+            for(int i = 0; i < scale; i++)
+            {
+                for(int j = 0; j < scale; j++)
+                {
+                    memcpy(dest + 4*i + size*4*j, src, 4);
+                }
+            }
+        }
+    }
+     
+    glfwSetWindowIcon(*win, 1, &i);
+
     glfwGetWindowSize(*win, width, height);
     /* OpenGL */
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -217,7 +253,14 @@ static int setup_gui(struct nk_context **ctx, struct nk_glfw *glfw, GLFWwindow *
     struct nk_font_config cfg = nk_font_config(20);
     cfg.oversample_v = 4;
     cfg.oversample_h = 4;
-    struct nk_font *some = nk_font_atlas_add_from_file(atlas, "/usr/share/fonts/ttf-sometype-mono/SometypeMono-Regular.ttf", 20, &cfg);
+    
+
+    int len = 62107;
+    char * font = malloc(len);
+    
+    from_base(b64_font, 82808, font, &len, 64, 0);
+    
+    struct nk_font *some = nk_font_atlas_add_from_memory(atlas, font, len, 20, &cfg);
     nk_glfw3_font_stash_end(glfw);
     nk_style_set_font(*ctx, &some->handle);
 
