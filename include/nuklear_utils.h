@@ -219,7 +219,7 @@ static int setup_gui(struct nk_context **ctx, struct nk_glfw *glfw, GLFWwindow *
     char * pixels = calloc(sizeof(char), original*original*4);
     int i_len = original*original*4;
     from_base(hex_icon, original*original*8, pixels, &i_len, original, 0);
-    
+
     for(int x = 0; x < original; x++)
     {
         for(int y = 0; y < original; y++)
@@ -229,9 +229,7 @@ static int setup_gui(struct nk_context **ctx, struct nk_glfw *glfw, GLFWwindow *
             for(int i = 0; i < scale; i++)
             {
                 for(int j = 0; j < scale; j++)
-                {
                     memcpy(dest + 4*i + size*4*j, src, 4);
-                }
             }
         }
     }

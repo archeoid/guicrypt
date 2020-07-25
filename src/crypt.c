@@ -165,9 +165,8 @@ void print_random(int size)
 void pad_to_block(unsigned char ** tex, unsigned long * tex_len, int block)
 {
     int difference = block - ((*tex_len) % block);
-    if(difference == block) {
+    if(difference == block)
         return;
-    }
     *tex_len += difference;
     *tex = realloc(*tex, *tex_len);
     memset(*tex + *tex_len - difference, 0, difference);
