@@ -7,7 +7,7 @@ CFLAGS += -g -o -std=c99 -Wall
 SRC = main.c src/util.c src/gui.c src/crypt.c
 OBJ = $(SRC:.c=.o)
 
-LIBS = -lglfw -lGL -lm -lGLU -lGLEW -ltomcrypt -lcrypto -Llib
+LIBS = -lglfw -lGL -lm -lGLU -lGLEW -ltomcrypt -Llib
 INCLUDE = -Iinclude -Iinclude/tomcrypt -Iinclude/nuklear
 $(BIN):
 	@mkdir -p bin
