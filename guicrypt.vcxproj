@@ -197,6 +197,13 @@
     <ClInclude Include="include\tomcrypt\tomcrypt_private.h" />
     <ClInclude Include="include\tomcrypt\tomcrypt_prng.h" />
     <ClInclude Include="include\util.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="guicrypt.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
